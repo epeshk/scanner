@@ -1,4 +1,4 @@
-# Epeshk.Text
+﻿## Epeshk.Text
 
 Tired of writing something like this:
 ```csharp
@@ -24,4 +24,6 @@ output.WriteLine(Process(line));
 
 ## Embeddable version
 
-[Here](https://github.com/epeshk/epeshk.text/blob/master/Epeshk.Text.Reduced/AsciiScanner.cs)
+Embeddable version for programming contests available in the project repository!
+
+And not forget to visit [my blog](https://epeshk.github.io)

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.1;net7.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Epeshk.Text</RootNamespace>
+        <RepositoryUrl>https://github.com/epeshk/epeshk.text</RepositoryUrl>
+        
+        <PackageId>Epeshk.Text</PackageId>
+        <Version>0.0.1</Version>
+        <Authors>epeshk</Authors>
+        
+        <Description>The library for working with text data streams, console input parsing. Inspired by Java Scanner, but optimized for high performance. The library contain types: AsciiScanner, TextScanner</Description>
+        <Deterministic>true</Deterministic>
+        <PathMap>$(SolutionDir)=C:\</PathMap>
+        <LangVersion>11</LangVersion>
+        <Title>Epeshk.Text</Title>
+        <Copyright>epeshk</Copyright>
+        <PackageProjectUrl>https://github.com/epeshk/epeshk.text</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>GitHub</RepositoryType>
+        <PackageTags>scanner text io console parsing</PackageTags>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Epeshk.Text.SourceGenerator\Epeshk.Text.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <PackageReference Include="System.Memory" Version="4.5.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>
