@@ -70,7 +70,7 @@ public partial class AsciiScanner<TConfig>
     {
       var method = @"
   [MethodImpl(MethodImplOptions.AggressiveInlining)] public bool TryRead(out #TYPE# value, char format='\0') => TryRead<#TYPE#, #TYPENAME#Parser>(out value, format);
-  [MethodImpl(MethodImplOptions.AggressiveInlining)] public #TYPE# Read#TYPENAME#() => Read<#TYPE#, #TYPENAME#Parser>();
+  [MethodImpl(MethodImplOptions.AggressiveInlining)] public #TYPE# Read#TYPENAME#(char format='\0') => Read<#TYPE#, #TYPENAME#Parser>(format);
 ";
 
       sb.Append(method

@@ -26,4 +26,4 @@ output.WriteLine(Process(line));
 
 Embeddable version for programming contests available in the [project repository](https://github.com/epeshk/epeshk.text/blob/master/Epeshk.Text.Reduced/AsciiScanner.cs)!
 
-And not forget to visit [my blog](https://epeshk.github.io)
+And not forget to visit [my blog](https://dnblog.github.io)

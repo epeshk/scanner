@@ -27,7 +27,7 @@ namespace Epeshk.Text
     struct CharP:G<c>{public b P(S s,out c v,out n c,c f=default){if(s.IsEmpty){v=default; c=0;return false;}v=(c)s[0];c=1;return true;}}
     struct StringP:G<string>{public b P(S s,out string v,out n c,c f='\0'){if(s.IsEmpty){v=default;c=0;return false;}
       var sb=new StringBuilder();foreach(var b in s){if(D(b))break;sb.Append((c)b);}v=sb.ToString();c=v.Length;return true;}}
-    [M(I)] T Read<T,TP>() where TP:struct,G<T>{if(!X<T,TP>(out T v))Q();return v;}
+    [M(I)] T Read<T,TP>(c f='\0') where TP:struct,G<T>{if(!X<T,TP>(out T v, f))Q();return v;}
     [M(I)] public b TryRead(out string value)=>X<string,StringP>(out value);
     [M(I)] public string ReadString()=>Read<string,StringP>();
     [M(I)] public b TryRead(out c value)=>X<c,CharP>(out value);
@@ -45,28 +45,28 @@ namespace Epeshk.Text
     struct DoubleP:G<double> {[M(I)] public b P(S s,out double v,out n c,c f='\0')=>U.TryParse(s,out v,out c,f);}
     struct DecimalP:G<decimal> {[M(I)] public b P(S s,out decimal v,out n c,c f='\0')=>U.TryParse(s,out v,out c,f);}
     [M(I)] public b TryRead(out b value,c format='\0')=>X<b,BoolP>(out value,format);
-    [M(I)] public b ReadBool()=>Read<b,BoolP>();
+    [M(I)] public b ReadBool(c format='\0')=>Read<b,BoolP>(format);
     [M(I)] public b TryRead(out sbyte value,c format='\0')=>X<sbyte,SByteP>(out value,format);
-    [M(I)] public sbyte ReadSByte()=>Read<sbyte,SByteP>();
+    [M(I)] public sbyte ReadSByte(c format='\0')=>Read<sbyte,SByteP>(format);
     [M(I)] public b TryRead(out byte value,c format='\0')=>X<byte,ByteP>(out value,format);
-    [M(I)] public byte ReadByte()=>Read<byte,ByteP>();
+    [M(I)] public byte ReadByte(c format='\0')=>Read<byte,ByteP>(format);
     [M(I)] public b TryRead(out short value,c format='\0')=>X<short,Int16P>(out value,format);
-    [M(I)] public short ReadInt16()=>Read<short,Int16P>();
+    [M(I)] public short ReadInt16(c format='\0')=>Read<short,Int16P>(format);
     [M(I)] public b TryRead(out ushort value,c format='\0')=>X<ushort,UInt16P>(out value,format);
-    [M(I)] public ushort ReadUInt16()=>Read<ushort,UInt16P>();
+    [M(I)] public ushort ReadUInt16(c format='\0')=>Read<ushort,UInt16P>(format);
     [M(I)] public b TryRead(out n value,c format='\0')=>X<n,Int32P>(out value,format);
-    [M(I)] public n ReadInt32()=>Read<n,Int32P>();
+    [M(I)] public n ReadInt32(c format='\0')=>Read<n,Int32P>(format);
     [M(I)] public b TryRead(out uint value,c format='\0')=>X<uint,UInt32P>(out value,format);
-    [M(I)] public uint ReadUInt32()=>Read<uint,UInt32P>();
+    [M(I)] public uint ReadUInt32(c format='\0')=>Read<uint,UInt32P>(format);
     [M(I)] public b TryRead(out long value,c format='\0')=>X<long,Int64P>(out value,format);
-    [M(I)] public long ReadInt64()=>Read<long,Int64P>();
+    [M(I)] public long ReadInt64(c format='\0')=>Read<long,Int64P>(format);
     [M(I)] public b TryRead(out ulong value,c format='\0')=>X<ulong,UInt64P>(out value,format);
-    [M(I)] public ulong ReadUInt64()=>Read<ulong,UInt64P>();
+    [M(I)] public ulong ReadUInt64(c format='\0')=>Read<ulong,UInt64P>(format);
     [M(I)] public b TryRead(out float value,c format='\0')=>X<float,SingleP>(out value,format);
-    [M(I)] public float ReadSingle()=>Read<float,SingleP>();
+    [M(I)] public float ReadSingle(c format='\0')=>Read<float,SingleP>(format);
     [M(I)] public b TryRead(out double value,c format='\0')=>X<double,DoubleP>(out value,format);
-    [M(I)] public double ReadDouble()=>Read<double,DoubleP>();
+    [M(I)] public double ReadDouble(c format='\0')=>Read<double,DoubleP>(format);
     [M(I)] public b TryRead(out decimal value,c format='\0')=>X<decimal,DecimalP>(out value,format);
-    [M(I)] public decimal ReadDecimal()=>Read<decimal,DecimalP>();
+    [M(I)] public decimal ReadDecimal(c format='\0')=>Read<decimal,DecimalP>(format);
   }
 }
