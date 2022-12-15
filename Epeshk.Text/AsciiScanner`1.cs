@@ -16,6 +16,9 @@ public partial class AsciiScanner<TConfig> : IDisposable
 
   protected AsciiScanner(Stream? stream=null, int initialBufferSize=4096, bool leaveOpen=false)
   {
+    if (initialBufferSize <= 0)
+      throw new ArgumentException(nameof(initialBufferSize));
+
     this.leaveOpen = leaveOpen;
     this.stream = stream ?? Console.OpenStandardInput();
     buffer = new byte[initialBufferSize];

@@ -12,8 +12,11 @@ public class TextScanner<TConfig> : IDisposable where TConfig : struct, ITextSca
   private readonly TextReader reader;
   private readonly bool leaveOpen;
 
-  public TextScanner(TextReader? reader=null, int initialBufferSize=1024, bool leaveOpen=false)
+  protected TextScanner(TextReader? reader=null, int initialBufferSize=2048, bool leaveOpen=false)
   {
+    if (initialBufferSize <= 0)
+      throw new ArgumentException(nameof(initialBufferSize));
+
     this.leaveOpen = leaveOpen;
     this.reader = reader ?? new StreamReader(Console.OpenStandardInput());
     buffer = new char[initialBufferSize];
