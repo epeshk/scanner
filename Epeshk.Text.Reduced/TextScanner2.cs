@@ -1,12 +1,6 @@
-﻿
-using System;
-using System.Globalization;
-using System.IO;
-
-namespace Epeshk.Text
+﻿namespace Epeshk.Text
 {
   using System;
-  using System.Globalization;
   using System.IO;
 
   public class TextScanner2
@@ -15,6 +9,12 @@ namespace Epeshk.Text
     char[] buffer = new char[4096];
 
     public int ReadInt()
+    {
+      var length = PrepareToken();
+      return int.Parse(buffer.AsSpan(0, length));
+    }
+
+    private int PrepareToken()
     {
       int length = 0;
       bool readStart = false;
@@ -34,7 +34,7 @@ namespace Epeshk.Text
         buffer[length++] = (char)ch;
       }
 
-      return int.Parse(buffer.AsSpan(0, length));
+      return length;
     }
   }
 }
