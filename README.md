@@ -1,5 +1,7 @@
 # Epeshk.Text
 
+[Blog post with benchmarks](https://dnblog.github.io/plain-text-io-lib/)
+
 Tired of writing something like this:
 ```csharp
 var n = int.Parse(Console.ReadLine());
