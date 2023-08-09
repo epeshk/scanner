@@ -56,7 +56,7 @@ class Scanner
   public double ReadDouble()
   {
     var length = PrepareToken();
-    return double.Parse(buffer.AsSpan(0, length));
+    return double.Parse(buffer.AsSpan(0, length), CultureInfo.InvariantCulture);
   }
 
   private int PrepareToken()
