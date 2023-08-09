@@ -1,7 +1,8 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using FluentAssertions;
 
-namespace Epeshk.Text.Scanner.Tests;
+namespace Scanner.Tests;
 
 public class AsciiScannerTests
 {
@@ -66,7 +67,7 @@ public class AsciiScannerTests
   {
     var random = new Random(seed);
     var array = Enumerable.Range(0, count).Select(_ => random.NextDouble()).ToArray();
-    var input = string.Join(delimiter, array.Select(x => x.ToString("F500")));
+    var input = string.Join(delimiter, array.Select(x => x.ToString("F500", CultureInfo.InvariantCulture)));
     
     var sc = Scanner(input, bufferSize);
   

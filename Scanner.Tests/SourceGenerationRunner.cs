@@ -1,11 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
-using Epeshk.Text.Scanner.SourceGenerator;
+using Scanner.SourceGenerator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Epeshk.Text.Scanner.Tests;
+namespace Scanner.Tests;
 
 public class SourceGenerationRunner
 {
@@ -17,7 +17,6 @@ public class SourceGenerationRunner
 
     var newFiles = newComp.SyntaxTrees
       .Where(x => Path.GetFileName(x.FilePath).EndsWith(".Generated.cs"));
-
 
     foreach (var newFile in newFiles)
     {

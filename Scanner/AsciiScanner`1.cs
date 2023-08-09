@@ -1,7 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Epeshk.Text;
+namespace Scanner;
 
 public partial class AsciiScanner<TConfig> : IDisposable
   where TConfig : struct, IAsciiScannerConfig
@@ -14,7 +15,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
   private readonly Stream stream;
   private readonly bool leaveOpen;
 
-  protected AsciiScanner(Stream? stream=null, int initialBufferSize=4096, bool leaveOpen=false)
+  protected AsciiScanner(Stream? stream=null, int initialBufferSize=32768, bool leaveOpen=false)
   {
     if (initialBufferSize <= 0)
       throw new ArgumentException(nameof(initialBufferSize));
@@ -25,42 +26,56 @@ public partial class AsciiScanner<TConfig> : IDisposable
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private bool TryRead<T, TParser>(out T value, char format='\0', TParser parser=default)
-    where TParser : struct, IParser<T>
-    => TryReadInBuffer(out value, format, parser) ?? TryReadRare(out value, format, parser);
-
-  [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private bool? TryReadInBuffer<T, TParser>(out T value, char format='\0', TParser parser=default)
+  private bool TryRead<T, TParser>(out T value, char format='\0')
     where TParser : struct, IParser<T>
   {
     value = default!;
 
-    if (!SkipDelimiters())
-      return null;
-
-    if (!parser.TryParse(Fragment, out value, out int bytesConsumed, format))
-      return IsReadIncomplete<T>() ? null : false;
-
-    if (offset + bytesConsumed >= length)
-      return null;
-
-    offset += bytesConsumed;
-    return true;
+    SkipDelimiters();
+    bool result = TParser.TryParse(Fragment, out value, out int bytesConsumed, format);
+    if (result && offset + bytesConsumed < length)
+    {
+      offset += bytesConsumed;
+      return true;
+    }
+    return TryReadRare<T, TParser>(out value, format);
   }
 
   [MethodImpl(MethodImplOptions.NoInlining)]
-  private bool TryReadRare<T, TParser>(out T value, char format='\0', TParser parser=default)
+  private bool TryReadRare<T, TParser>(out T value, char format)
     where TParser : struct, IParser<T>
   {
-    while (FetchData())
+    bool result;
+    int bytesConsumed;
+    if (!Fragment.IsEmpty)
     {
-      var readOnce = TryReadInBuffer(out value, format, parser);
-      if (readOnce.HasValue)
-        return readOnce.GetValueOrDefault();
+      result = TParser.TryParse(Fragment, out value, out bytesConsumed, format);
+      if (!result && !IsReadIncomplete<T>())
+      {
+        value = default!;
+        return false;
+      }
     }
 
-    var result = parser.TryParse(Fragment, out value, out var bc, format);
-    offset += bc;
+    while (FetchData())
+    {
+      SkipDelimiters();
+      result = TParser.TryParse(Fragment, out value, out bytesConsumed, format);
+      if (result)
+      {
+        if (offset + bytesConsumed < length)
+        {
+          offset += bytesConsumed;
+          return true;
+        }
+      }
+      else if (!IsReadIncomplete<T>())
+        return false;
+    }
+
+    result = TParser.TryParse(Fragment, out value, out var bc, format);
+    if (result)
+      offset += bc;
     return result;
   }
 
@@ -70,7 +85,6 @@ public partial class AsciiScanner<TConfig> : IDisposable
     get => buffer.AsSpan(offset, length - offset);
   }
 
-  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   private bool IsReadIncomplete<T>()
   {
     if (typeof(T) == typeof(double) ||
@@ -86,7 +100,6 @@ public partial class AsciiScanner<TConfig> : IDisposable
     return Fragment.Length < 32;
   }
 
-  [MethodImpl(MethodImplOptions.NoInlining)]
   private bool IsReadIncompleteUnbounded()
   {
     var span = Fragment;
@@ -97,16 +110,10 @@ public partial class AsciiScanner<TConfig> : IDisposable
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private bool SkipDelimiters()
+  private void SkipDelimiters()
   {
-    while (offset < length)
-    {
-      if (!IsDelimiter(buffer[offset]))
-        return true;
+    while (offset < length && IsDelimiter(buffer[offset]))
       offset++;
-    }
-
-    return false;
   }
 
   private bool FetchData()
@@ -136,7 +143,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private static bool IsDelimiter(byte c) => config.IsDelimiter(c);
+  private static bool IsDelimiter(byte c) => TConfig.IsDelimiter(c);
 
   private void GrowBuffer()
   {
@@ -162,7 +169,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
 
   private interface IParser<T>
   {
-    bool TryParse(
+    static abstract bool TryParse(
       ReadOnlySpan<byte> source,
       out T value,
       out int bytesConsumed,
@@ -172,7 +179,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
   private struct CharParser : IParser<char>
   {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryParse(ReadOnlySpan<byte> source, out char value, out int bytesConsumed, char standardFormat = default)
+    public static bool TryParse(ReadOnlySpan<byte> source, out char value, out int bytesConsumed, char standardFormat = default)
     {
       if (source.IsEmpty)
       {
@@ -189,7 +196,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
 
   private struct StringParser : IParser<string>
   {
-    public bool TryParse(ReadOnlySpan<byte> source, out string value, out int bytesConsumed, char standardFormat = default)
+    public static bool TryParse(ReadOnlySpan<byte> source, out string value, out int bytesConsumed, char standardFormat = default)
     {
       if (source.IsEmpty)
       {
@@ -212,6 +219,7 @@ public partial class AsciiScanner<TConfig> : IDisposable
     }
   }
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public bool TryRead(out string value, char format = default) => TryRead<string, StringParser>(out value, format);
   public string ReadString(char format = default) => Read<string, StringParser>(format);
 

@@ -5,16 +5,20 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RollForward>Major</RollForward>
+        <IsPackable>false</IsPackable>
 
         <InvariantGlobalization>true</InvariantGlobalization>
+
+        <RootNamespace>Scanner.Benchmarks</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Epeshk.Text\Epeshk.Text.csproj" />
+      <ProjectReference Include="..\Scanner\Scanner.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.7" />
     </ItemGroup>
 
 </Project>

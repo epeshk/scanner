@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Epeshk.Text;
+namespace Scanner;
 
 public sealed class AsciiScanner : AsciiScanner<AsciiScanner.InvisibleAndNonAscii>
 {
@@ -12,6 +12,6 @@ public sealed class AsciiScanner : AsciiScanner<AsciiScanner.InvisibleAndNonAsci
   public struct InvisibleAndNonAscii : IAsciiScannerConfig
   {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDelimiter(byte c) => (byte)(c + 128) <= 160; // c <= ' ' || c >= 128
+    public static bool IsDelimiter(byte c) => (byte)(c + 128) <= 160; // c <= ' ' || c >= 128
   }
 }

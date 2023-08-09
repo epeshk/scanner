@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-
-namespace Epeshk.Text.Scanner.Tests;
+﻿namespace Scanner.Tests;
 
 public class TextScannerTests
 {

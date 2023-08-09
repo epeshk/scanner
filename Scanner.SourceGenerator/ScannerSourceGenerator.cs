@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace Epeshk.Text.Scanner.SourceGenerator;
+namespace Scanner.SourceGenerator;
 
 [Generator]
 public class ScannerSourceGenerator : ISourceGenerator
@@ -27,7 +27,7 @@ using System;
 using System.Buffers.Text;
 using System.Runtime.CompilerServices;
 
-namespace Epeshk.Text;
+namespace Scanner;
 
 public partial class AsciiScanner<TConfig>
 {");
@@ -61,7 +61,7 @@ public partial class AsciiScanner<TConfig>
     foreach (var type in types)
     {
       var method = @"
-  private struct #TYPENAME#Parser : IParser<#TYPE#> {[MethodImpl(MethodImplOptions.AggressiveInlining)] public bool TryParse(ReadOnlySpan<byte> s, out #TYPE# v, out int c, char f='\0') => Utf8Parser.TryParse(s, out v, out c, f);}";
+  private struct #TYPENAME#Parser : IParser<#TYPE#> {[MethodImpl(MethodImplOptions.AggressiveInlining)] public static bool TryParse(ReadOnlySpan<byte> s, out #TYPE# v, out int c, char f='\0') => Utf8Parser.TryParse(s, out v, out c, f);}";
       sb.Append(method
         .Replace("#TYPE#", type)
         .Replace("#TYPENAME#", typeName[type]));

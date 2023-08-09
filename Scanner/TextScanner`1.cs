@@ -1,8 +1,7 @@
-﻿#if NET7_0_OR_GREATER
-using System.Globalization;
+﻿using System.Globalization;
 using System.Runtime.CompilerServices;
 
-namespace Epeshk.Text;
+namespace Scanner;
 
 public class TextScanner<TConfig> : IDisposable where TConfig : struct, ITextScannerConfig
 {
@@ -259,4 +258,3 @@ public class TextScanner<TConfig> : IDisposable where TConfig : struct, ITextSca
   
   private static void ThrowFormatException() => throw new FormatException();
 }
-#endif

@@ -1,8 +1,6 @@
-﻿#if NET7_0_OR_GREATER
+﻿using System.Runtime.CompilerServices;
 
-using System.Runtime.CompilerServices;
-
-namespace Epeshk.Text;
+namespace Scanner;
 
 public sealed class TextScanner : TextScanner<TextScanner.WhitespaceSkippingConfig>
 {
@@ -16,5 +14,3 @@ public sealed class TextScanner : TextScanner<TextScanner.WhitespaceSkippingConf
     public static bool IsDelimiter(char c) => char.IsWhiteSpace(c);
   }
 }
-
-#endif

@@ -2,9 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
+        <RollForward>Major</RollForward>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>Scanner.Tests</RootNamespace>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -20,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Epeshk.Text.SourceGenerator\Epeshk.Text.SourceGenerator.csproj" />
-      <ProjectReference Include="..\Epeshk.Text\Epeshk.Text.csproj" />
+      <ProjectReference Include="..\Scanner.SourceGenerator\Scanner.SourceGenerator.csproj" />
+      <ProjectReference Include="..\Scanner\Scanner.csproj" />
     </ItemGroup>
 
 </Project>
