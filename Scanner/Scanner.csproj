@@ -8,7 +8,7 @@
         <RepositoryUrl>https://github.com/epeshk/scanner</RepositoryUrl>
         
         <PackageId>Scanner</PackageId>
-        <Version>0.1.0</Version>
+        <Version>0.1.1</Version>
         <Authors>epeshk</Authors>
         
         <Description>The library for working with text data streams, console input parsing. Inspired by Java Scanner, but optimized for high performance. The library contain types: AsciiScanner, TextScanner</Description>
